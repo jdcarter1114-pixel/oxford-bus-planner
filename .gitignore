@@ -10,3 +10,4 @@ data/*.sqlite
 data/*.sqlite-*
 data/*.db
 data/*.zip
+!data/oxfordbus_1793880315.zip
