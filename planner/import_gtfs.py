@@ -19,6 +19,8 @@ from pathlib import Path
 
 import requests
 
+from contextlib import closing
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB = ROOT / "data" / "oxford_buses.sqlite"
 SOURCE_URL = "https://www.oxfordbus.co.uk/open-data/network/current?format=gtfs"
@@ -84,7 +86,7 @@ def import_feed(zip_path: str | Path, db_path: str | Path = DEFAULT_DB) -> dict:
     os.close(fd)
     counts = {}
     try:
-        with sqlite3.connect(tempname) as db, zipfile.ZipFile(zip_path) as archive:
+        with closing(sqlite3.connect(tempname)) as db, zipfile.ZipFile(zip_path) as archive:
             db.executescript(SCHEMA)
             tables = {
                 "stops.txt": ("stops", ("stop_id", "stop_name", "stop_lat", "stop_lon")),

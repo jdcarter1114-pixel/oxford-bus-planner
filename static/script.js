@@ -157,6 +157,14 @@ function init() {
   endpointGroup = L.layerGroup().addTo(map);
   routeLineGroup = L.layerGroup().addTo(map);
   stopGroup = L.layerGroup().addTo(map);
+  // Leaflet must recalculate its viewport after the responsive layout
+  // changes or when a stylesheet finishes loading.
+  window.addEventListener('load', () => map.invalidateSize({pan:false}));
+  window.addEventListener('resize', () => map.invalidateSize({pan:false}));
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(() => map.invalidateSize({pan:false}));
+    observer.observe(el('map'));
+  }
   map.on('click', e => {
     if(!pickMode) return;
     const which = pickMode;
