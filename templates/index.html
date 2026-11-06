@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Oxford bus journey planner combining published GTFS schedules and walking estimates." />
+  <title>Oxford Move | Bus journey planner</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzx8a1g6tD/miZyoHMxS5v1lW0=" crossorigin="" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="panel">
+      <header class="brand"><div class="brand-logo" aria-hidden="true">◉</div><div><div class="brand-name">oxford<span>move</span></div><div class="brand-tagline">Find your way around Oxford</div></div></header>
+      <div class="hero-label">THE SMARTER WAY TO GET THERE</div>
+      <h1>Every stop.<br /><em>One journey.</em></h1>
+      <p class="intro">Plan the quickest bus journey across Oxford, including walking and transfers.</p>
+
+      <form id="journey-form" autocomplete="off">
+        <div class="location-fields">
+          <label class="input-label" for="start">FROM</label>
+          <div class="input-row">
+            <span class="field-dot start-dot"></span>
+            <input id="start" type="text" placeholder="Enter an Oxford address or postcode" required maxlength="160" />
+            <button type="button" class="input-action" id="location-btn" aria-label="Use my current location" title="Use my current location">⌖</button>
+          </div>
+          <div class="connector-dots" aria-hidden="true">⋮</div>
+          <label class="input-label" for="end">TO</label>
+          <div class="input-row">
+            <span class="field-dot end-dot"></span>
+            <input id="end" type="text" placeholder="Where are you heading?" required maxlength="160" />
+          </div>
+        </div>
+        <div class="form-secondary">
+          <div class="departure-field">
+            <label for="depart">DEPARTURE TIME</label>
+            <input type="datetime-local" id="depart" required />
+          </div>
+          <button type="button" id="choose-start" class="secondary-btn">Select start on map</button>
+          <button type="button" id="choose-end" class="secondary-btn">Select destination</button>
+        </div>
+        <button type="submit" class="primary-btn" id="search-btn">Find my route <span aria-hidden="true">→</span></button>
+      </form>
+
+      <div id="status" class="status" role="status" aria-live="polite">Loading map and timetable information…</div>
+      <section id="results" aria-live="polite" hidden>
+        <div class="results-title"><h2>Journey options</h2><span id="results-count"></span></div>
+        <div id="options" class="options"></div>
+        <div id="instructions" class="instructions"></div>
+      </section>
+      <div class="side-footer"><span class="small-circle">i</span> Timetable-based estimates, not live bus tracking. Walking paths are schematic.</div>
+    </aside>
+    <main class="map-wrapper" aria-label="Journey map">
+      <div class="map-top"><span class="live-indicator"></span> OXFORD, UNITED KINGDOM <span class="map-note">BUS + WALK</span></div>
+      <div id="map" aria-label="Interactive Oxford map"></div>
+      <div class="map-floating"> <span><i class="legend-line bus-line"></i> Bus</span> <span><i class="legend-line walk-line"></i> Walking estimate</span> </div>
+      <div class="map-credit">Data © Oxford Bus Company (OGL 3.0) · © OpenStreetMap contributors</div>
+    </main>
+  </div>
+</body>
+</html>
